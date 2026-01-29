@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { login, fetchProtected } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -11,6 +12,8 @@ export default function RBACPage() {
     const [selectedRole, setSelectedRole] = useState('USER');
     const [result, setResult] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const router = useRouter();
 
     const handleLogout = () => {
         logout()
@@ -90,6 +93,15 @@ export default function RBACPage() {
                             </button>
                         </div>
 
+                        {role === 'ADMIN' && (
+                            <button
+                                onClick={() => router.push('/users')}
+                                className="w-full bg-green-600 text-white py-2 rounded cursor-pointer"
+                            >
+                                Go to Users Management
+                            </button>
+                        )}
+
                         <button
                             onClick={handleLogout}
                             className="w-full text-sm text-red-500 cursor-pointer"
@@ -104,6 +116,8 @@ export default function RBACPage() {
                         {isLoading ? 'Loading...' : result}
                     </pre>
                 )}
+
+
             </div>
         </div>
     );
